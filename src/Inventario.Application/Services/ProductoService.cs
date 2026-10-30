@@ -123,7 +123,7 @@ public class ProductoService : IProductoService
 
             kardexMovs.Add(new MovimientoKardexDto(
                 m.Id, m.Tipo.ToString(), m.Cantidad, m.PrecioUnitario,
-                m.Documento, m.Proveedor?.Nombre, m.Usuario.Username, m.Fecha, saldo
+                m.Documento, m.Proveedor?.RazonSocial, m.Usuario.Username, m.Fecha, saldo
             ));
         }
 

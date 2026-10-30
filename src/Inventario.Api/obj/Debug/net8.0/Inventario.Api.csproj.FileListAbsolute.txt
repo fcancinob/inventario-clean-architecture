@@ -135,6 +135,7 @@ C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.csproj.CoreCompileInputs.cache
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.sourcelink.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\staticwebassets\msbuild.Inventario.Api.Microsoft.AspNetCore.StaticWebAssets.props

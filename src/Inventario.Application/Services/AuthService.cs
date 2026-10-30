@@ -1,7 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BCrypt.Net;
 using Inventario.Application.Dtos;
 using Inventario.Application.Interfaces;
 using Inventario.Domain.Exceptions;
@@ -14,12 +13,12 @@ namespace Inventario.Application.Services;
 public class AuthService : IAuthService
 {
     private readonly DbContext _context;
-    private readonly IConfiguration _config;
+    private readonly IConfiguration _configuration;
 
-    public AuthService(DbContext context, IConfiguration config)
+    public AuthService(DbContext context, IConfiguration configuration)
     {
         _context = context;
-        _config = config;
+        _configuration = configuration;
     }
 
     public async Task<LoginResponseDto> LoginAsync(LoginRequestDto request)
@@ -28,36 +27,43 @@ public class AuthService : IAuthService
             .Include(u => u.Rol)
             .FirstOrDefaultAsync(u => u.Username == request.Username);
 
+        // Validar existencia, contraseña hash BCrypt y cuenta activa
         if (usuario == null || !usuario.Activo || !BCrypt.Net.BCrypt.Verify(request.Password, usuario.PasswordHash))
         {
-            throw new BusinessRuleException("Credenciales inválidas o usuario no autorizado.", 401);
+            throw new BusinessRuleException("Credenciales inválidas o cuenta de usuario inactiva.", 401);
         }
 
-        var secretKey = _config["Jwt:Secret"] ?? "SuperSecretKey_InventarioComputacion_2026_KeyMustBeLongEnough!";
+        // Generar Token JWT
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var secretKey = _configuration["Jwt:Secret"] ?? "SuperSecretKey_InventarioComputacion_2026_KeyMustBeLongEnough!";
         var key = Encoding.UTF8.GetBytes(secretKey);
-        var rolNombre = usuario.Rol?.Nombre ?? "CONSULTA";
+
+        var expiracion = DateTime.UtcNow.AddHours(8);
 
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
             new Claim(ClaimTypes.Name, usuario.Username),
-            new Claim(ClaimTypes.Role, rolNombre)
+            new Claim(ClaimTypes.Role, usuario.Rol.Codigo)
         };
-
-        var expiracion = DateTime.UtcNow.AddMinutes(60);
 
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
             Expires = expiracion,
-            Issuer = _config["Jwt:Issuer"] ?? "InventarioApi",
-            Audience = _config["Jwt:Audience"] ?? "InventarioWeb",
+            Issuer = _configuration["Jwt:Issuer"] ?? "InventarioApi",
+            Audience = _configuration["Jwt:Audience"] ?? "InventarioWeb",
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
-        var tokenHandler = new JwtSecurityTokenHandler();
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        return new LoginResponseDto(tokenHandler.WriteToken(token), usuario.Username, rolNombre, expiracion);
+        // Mantiene el orden exacto de tu DTO: Token, Username, Rol, Expiracion
+        return new LoginResponseDto(
+            tokenHandler.WriteToken(token),
+            usuario.Username,
+            usuario.Rol.Codigo,
+            expiracion
+        );
     }
 }

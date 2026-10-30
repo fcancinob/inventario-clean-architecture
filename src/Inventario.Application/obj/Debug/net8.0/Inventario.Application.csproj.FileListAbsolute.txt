@@ -8,6 +8,7 @@ C:\Users\Negro\Desktop\Antara\src\Inventario.Application\obj\Debug\net8.0\Invent
 C:\Users\Negro\Desktop\Antara\src\Inventario.Application\obj\Debug\net8.0\Inventario.Application.AssemblyInfoInputs.cache
 C:\Users\Negro\Desktop\Antara\src\Inventario.Application\obj\Debug\net8.0\Inventario.Application.AssemblyInfo.cs
 C:\Users\Negro\Desktop\Antara\src\Inventario.Application\obj\Debug\net8.0\Inventario.Application.csproj.CoreCompileInputs.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Application\obj\Debug\net8.0\Inventario.Application.sourcelink.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Application\obj\Debug\net8.0\Inventar.25F09479.Up2Date
 C:\Users\Negro\Desktop\Antara\src\Inventario.Application\obj\Debug\net8.0\Inventario.Application.dll
 C:\Users\Negro\Desktop\Antara\src\Inventario.Application\obj\Debug\net8.0\refint\Inventario.Application.dll

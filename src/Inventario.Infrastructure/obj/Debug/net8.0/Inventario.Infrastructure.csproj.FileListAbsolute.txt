@@ -10,6 +10,7 @@ C:\Users\Negro\Desktop\Antara\src\Inventario.Infrastructure\obj\Debug\net8.0\Inv
 C:\Users\Negro\Desktop\Antara\src\Inventario.Infrastructure\obj\Debug\net8.0\Inventario.Infrastructure.AssemblyInfoInputs.cache
 C:\Users\Negro\Desktop\Antara\src\Inventario.Infrastructure\obj\Debug\net8.0\Inventario.Infrastructure.AssemblyInfo.cs
 C:\Users\Negro\Desktop\Antara\src\Inventario.Infrastructure\obj\Debug\net8.0\Inventario.Infrastructure.csproj.CoreCompileInputs.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Infrastructure\obj\Debug\net8.0\Inventario.Infrastructure.sourcelink.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Infrastructure\obj\Debug\net8.0\Inventar.B3D912E1.Up2Date
 C:\Users\Negro\Desktop\Antara\src\Inventario.Infrastructure\obj\Debug\net8.0\Inventario.Infrastructure.dll
 C:\Users\Negro\Desktop\Antara\src\Inventario.Infrastructure\obj\Debug\net8.0\refint\Inventario.Infrastructure.dll

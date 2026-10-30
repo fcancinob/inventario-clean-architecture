@@ -121,6 +121,7 @@ C:\Users\Negro\Desktop\Antara\tests\Inventario.UnitTests\obj\Debug\net8.0\Invent
 C:\Users\Negro\Desktop\Antara\tests\Inventario.UnitTests\obj\Debug\net8.0\Inventario.UnitTests.AssemblyInfoInputs.cache
 C:\Users\Negro\Desktop\Antara\tests\Inventario.UnitTests\obj\Debug\net8.0\Inventario.UnitTests.AssemblyInfo.cs
 C:\Users\Negro\Desktop\Antara\tests\Inventario.UnitTests\obj\Debug\net8.0\Inventario.UnitTests.csproj.CoreCompileInputs.cache
+C:\Users\Negro\Desktop\Antara\tests\Inventario.UnitTests\obj\Debug\net8.0\Inventario.UnitTests.sourcelink.json
 C:\Users\Negro\Desktop\Antara\tests\Inventario.UnitTests\obj\Debug\net8.0\Inventar.4242DB0C.Up2Date
 C:\Users\Negro\Desktop\Antara\tests\Inventario.UnitTests\obj\Debug\net8.0\Inventario.UnitTests.dll
 C:\Users\Negro\Desktop\Antara\tests\Inventario.UnitTests\obj\Debug\net8.0\refint\Inventario.UnitTests.dll
