@@ -1,0 +1,11 @@
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\bin\Debug\net8.0\Inventario.Domain.deps.json
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\bin\Debug\net8.0\Inventario.Domain.dll
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\bin\Debug\net8.0\Inventario.Domain.pdb
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\obj\Debug\net8.0\Inventario.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\obj\Debug\net8.0\Inventario.Domain.AssemblyInfoInputs.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\obj\Debug\net8.0\Inventario.Domain.AssemblyInfo.cs
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\obj\Debug\net8.0\Inventario.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\obj\Debug\net8.0\Inventario.Domain.dll
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\obj\Debug\net8.0\refint\Inventario.Domain.dll
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\obj\Debug\net8.0\Inventario.Domain.pdb
+C:\Users\Negro\Desktop\Antara\src\Inventario.Domain\obj\Debug\net8.0\ref\Inventario.Domain.dll
