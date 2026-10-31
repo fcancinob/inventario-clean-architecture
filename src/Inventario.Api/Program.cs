@@ -46,19 +46,21 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// DbContext SQLite
+// Configuración de EF Core y DbContext
 builder.Services.AddDbContext<InventarioDbContext>(options =>
-    options.UseSqlite("Data Source=inventario.db"));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-builder.Services.AddScoped<DbContext>(provider => provider.GetRequiredService<InventarioDbContext>());
+// Mapeos para resolver la inyección de dependencias en servicios que piden IInventarioDbContext o DbContext
+builder.Services.AddScoped<IInventarioDbContext>(sp => sp.GetRequiredService<InventarioDbContext>());
+builder.Services.AddScoped<DbContext>(sp => sp.GetRequiredService<InventarioDbContext>());
 
-// Inyección de Servicios
+// Inyección de Servicios de Aplicación
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IProductoService, ProductoService>();
 builder.Services.AddScoped<IMovimientoService, MovimientoService>();
 builder.Services.AddScoped<IReporteService, ReporteService>();
 
-// JWT Authentication
+// Autenticación JWT
 var secretKey = builder.Configuration["Jwt:Secret"] ?? "SuperSecretKey_InventarioComputacion_2026_KeyMustBeLongEnough!";
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -82,14 +84,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Initializer Db
+// Inicializar Semilla de Datos (Seed)
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<InventarioDbContext>();
     DbInitializer.Initialize(context);
 }
 
-// Exception Handler
+// Middleware de Manejo Global de Excepciones
 app.UseExceptionHandler(exceptionHandlerApp =>
 {
     exceptionHandlerApp.Run(async context =>
@@ -108,7 +110,7 @@ app.UseExceptionHandler(exceptionHandlerApp =>
     });
 });
 
-// Middlewares
+// Middlewares del Pipeline de ASP.NET Core
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
