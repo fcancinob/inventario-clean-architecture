@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Inventario.Api.Controllers;
 
 [ApiController]
-[Route("api")]
+[Route("api/movimientos")]
 [Authorize(Roles = "ADMIN,OPERADOR")]
 public class MovimientosController : ControllerBase
 {
