@@ -12,7 +12,10 @@ import {
 
 export default function MovimientosPage() {
   const [productos, setProductos] = useState([]);
+  const [movimientos, setMovimientos] = useState([]);
+  const [selectedSku, setSelectedSku] = useState('');
   const [loading, setLoading] = useState(true);
+  const [loadingMovs, setLoadingMovs] = useState(false);
   const [error, setError] = useState('');
 
   const [submitting, setSubmitting] = useState(false);
@@ -37,11 +40,43 @@ export default function MovimientosPage() {
     numeroBoleta: '',
   });
 
+  // 1. Cargar Ficha Kardex por SKU (GET /api/productos/{sku}/movimientos)
+  const fetchKardexPorSku = async (sku) => {
+    if (!sku) return;
+    setLoadingMovs(true);
+    try {
+      const res = await api.get(`/productos/${sku}/movimientos`);
+      const rawMovs = res.data?.movimientos || (Array.isArray(res.data) ? res.data : []);
+      
+      const listMapped = rawMovs.map((m) => ({
+        id: m.id || m.Id,
+        tipo: (m.tipo || m.Tipo || '').toString().toUpperCase(),
+        cantidad: m.cantidad ?? m.Cantidad ?? 0,
+        precioUnitario: m.precioUnitario ?? m.PrecioUnitario ?? 0,
+        documento: m.documento || m.Documento || '--',
+        proveedor: m.proveedor || m.Proveedor || '--',
+        usuario: m.usuario || m.Usuario || '--',
+        fecha: m.fecha || m.Fecha || new Date().toISOString(),
+        saldoAcumulado: m.saldoAcumulado ?? m.SaldoAcumulado ?? 0
+      }));
+
+      // Ordenar por fecha descendente
+      listMapped.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+      setMovimientos(listMapped);
+    } catch (err) {
+      console.warn(`No se pudieron obtener movimientos para el SKU ${sku}:`, err);
+      setMovimientos([]);
+    } finally {
+      setLoadingMovs(false);
+    }
+  };
+
+  // 2. Cargar Catálogo de Productos
   const fetchProductos = async () => {
     setLoading(true);
     setError('');
     try {
-      const resProds = await api.get('/productos');
+      const resProds = await api.get('/productos?pageSize=100');
       const rawProds = Array.isArray(resProds.data) 
         ? resProds.data 
         : (resProds.data?.items || []);
@@ -49,9 +84,15 @@ export default function MovimientosPage() {
       setProductos(rawProds);
 
       if (rawProds.length > 0) {
-        const firstId = rawProds[0].id || rawProds[0].Id;
+        const firstProd = rawProds[0];
+        const firstId = firstProd.id || firstProd.Id;
+        const firstSku = firstProd.sku || firstProd.Sku || firstProd.codigo;
+        
+        setSelectedSku(firstSku);
         setFormEntrada(prev => ({ ...prev, productoId: prev.productoId || firstId }));
         setFormSalida(prev => ({ ...prev, productoId: prev.productoId || firstId }));
+        
+        fetchKardexPorSku(firstSku);
       }
     } catch (err) {
       console.error("Error al cargar productos:", err);
@@ -65,6 +106,20 @@ export default function MovimientosPage() {
     fetchProductos();
   }, []);
 
+  const handleSelectSkuChange = (e) => {
+    const sku = e.target.value;
+    setSelectedSku(sku);
+    fetchKardexPorSku(sku);
+  };
+
+const prodSeleccionado = productos.find(p => (p.id || p.Id) === Number(formSalida.productoId));
+if (prodSeleccionado && formSalida.cantidad > (prodSeleccionado.stockActual ?? prodSeleccionado.StockActual ?? 0)) {
+  setFormError(`Stock insuficiente. Stock actual disponible: ${prodSeleccionado.stockActual} unidades.`);
+  setSubmitting(false);
+  return;
+}
+
+  // 3. Submit con Rutas Correctas: /movimientos/entradas y /movimientos/salidas
   const handleSubmit = async (e) => {
     e.preventDefault();
     setFormError('');
@@ -80,6 +135,8 @@ export default function MovimientosPage() {
           costoUnitario: Number(formEntrada.costoUnitario),
           numeroFactura: formEntrada.numeroFactura || 'FAC-001',
         };
+
+        // RUTA CORRECTA SEGÚN TU CONTROLLER: /movimientos/entradas
         await api.post('/movimientos/entradas', payload);
         setFormSuccess('Entrada registrada con éxito.');
         setFormEntrada(prev => ({ ...prev, cantidad: 1, costoUnitario: 0, numeroFactura: '' }));
@@ -89,16 +146,24 @@ export default function MovimientosPage() {
           cantidad: Number(formSalida.cantidad),
           numeroBoleta: formSalida.numeroBoleta || 'BOL-001',
         };
+
+        // RUTA CORRECTA SEGÚN TU CONTROLLER: /movimientos/salidas
         await api.post('/movimientos/salidas', payload);
         setFormSuccess('Salida registrada con éxito.');
         setFormSalida(prev => ({ ...prev, cantidad: 1, numeroBoleta: '' }));
       }
 
-      fetchProductos();
+      await fetchProductos();
+      if (selectedSku) {
+        await fetchKardexPorSku(selectedSku);
+      }
       setTimeout(() => setFormSuccess(''), 3000);
+
     } catch (err) {
       console.error("Error backend:", err.response?.data);
-      const errorsObj = err.response?.data?.errors;
+      const responseData = err.response?.data;
+      const errorsObj = responseData?.errors;
+
       if (errorsObj) {
         const details = Object.entries(errorsObj)
           .map(([f, msgs]) => `${f}: ${Array.isArray(msgs) ? msgs.join(', ') : msgs}`)
@@ -106,10 +171,10 @@ export default function MovimientosPage() {
         setFormError(`Error de validación: ${details}`);
       } else {
         setFormError(
-          err.response?.data?.detail || 
-          err.response?.data?.title || 
-          err.response?.data?.message || 
-          'Error 400 al registrar el movimiento.'
+          responseData?.detail || 
+          responseData?.title || 
+          responseData?.message || 
+          'Error al registrar el movimiento.'
         );
       }
     } finally {
@@ -122,11 +187,12 @@ export default function MovimientosPage() {
       <div>
         <h1 className="text-2xl font-bold text-white flex items-center gap-2">
           <ArrowLeftRight className="w-7 h-7 text-indigo-400" />
-          Movimientos de Inventario
+          Movimientos e Historial (Kardex)
         </h1>
-        <p className="text-slate-400 text-sm mt-1">Registra entradas (factura) y salidas (boleta) de stock.</p>
+        <p className="text-slate-400 text-sm mt-1">Registra entradas (factura), salidas (boleta) y consulta la ficha por producto.</p>
       </div>
 
+      {/* Formulario de Registro */}
       <div className="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-xl">
         <div className="flex items-center justify-between mb-6 border-b border-slate-800 pb-4">
           <h2 className="text-lg font-bold text-white flex items-center gap-2">
@@ -296,6 +362,99 @@ export default function MovimientosPage() {
             </button>
           </div>
         </form>
+      </div>
+
+      {/* Ficha Kardex por Producto */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden shadow-xl">
+        <div className="p-4 bg-slate-950/50 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <h3 className="text-sm font-bold text-white uppercase tracking-wider">
+              Historial Kardex por Producto
+            </h3>
+            <select
+              value={selectedSku}
+              onChange={handleSelectSkuChange}
+              className="px-3 py-1 bg-slate-900 border border-slate-800 rounded-lg text-indigo-400 font-mono text-xs font-bold focus:outline-none focus:border-indigo-500"
+            >
+              {productos.map((p) => {
+                const sku = p.sku || p.Sku || p.codigo;
+                return (
+                  <option key={p.id || p.Id} value={sku}>
+                    {sku} - {p.nombre || p.Nombre}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
+
+          <button
+            onClick={() => fetchKardexPorSku(selectedSku)}
+            className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors cursor-pointer self-start sm:self-auto"
+            title="Recargar Kardex"
+          >
+            <RefreshCw className={`w-4 h-4 ${loadingMovs ? 'animate-spin' : ''}`} />
+          </button>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm text-slate-300 min-w-[700px]">
+            <thead className="bg-slate-950 text-slate-400 uppercase text-xs border-b border-slate-800">
+              <tr>
+                <th className="px-6 py-4">Tipo</th>
+                <th className="px-6 py-4 text-center">Cantidad</th>
+                <th className="px-6 py-4">P. Unitario</th>
+                <th className="px-6 py-4">Documento</th>
+                <th className="px-6 py-4">Proveedor</th>
+                <th className="px-6 py-4">Usuario</th>
+                <th className="px-6 py-4">Fecha</th>
+                <th className="px-6 py-4 text-center">Saldo Acum.</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800">
+              {loadingMovs ? (
+                <tr>
+                  <td colSpan="8" className="text-center py-8 text-slate-500">
+                    Cargando movimientos para {selectedSku}...
+                  </td>
+                </tr>
+              ) : movimientos.length === 0 ? (
+                <tr>
+                  <td colSpan="8" className="text-center py-8 text-slate-500">
+                    Sin movimientos registrados para el producto {selectedSku}.
+                  </td>
+                </tr>
+              ) : (
+                movimientos.map((m) => {
+                  const isEntrada = m.tipo.includes('ENTRADA') || m.tipo === 'IN';
+                  return (
+                    <tr key={m.id} className="hover:bg-slate-800/50 transition-colors">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${
+                          isEntrada 
+                            ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
+                            : 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                        }`}>
+                          {m.tipo}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-center font-bold text-white">{m.cantidad}</td>
+                      <td className="px-6 py-4 font-mono">${m.precioUnitario?.toLocaleString()}</td>
+                      <td className="px-6 py-4 font-mono text-slate-300">{m.documento}</td>
+                      <td className="px-6 py-4 text-slate-400">{m.proveedor}</td>
+                      <td className="px-6 py-4 text-slate-400 text-xs font-mono">{m.usuario}</td>
+                      <td className="px-6 py-4 text-slate-400 text-xs whitespace-nowrap">
+                        {m.fecha ? new Date(m.fecha).toLocaleString() : '--'}
+                      </td>
+                      <td className="px-6 py-4 text-center font-bold text-indigo-400 font-mono">
+                        {m.saldoAcumulado}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
