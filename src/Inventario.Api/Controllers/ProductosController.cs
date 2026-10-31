@@ -1,5 +1,6 @@
 using Inventario.Application.Dtos;
 using Inventario.Application.Interfaces;
+using Inventario.Domain.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,7 +32,7 @@ public class ProductosController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN,OPERADOR")]
     public async Task<IActionResult> Create([FromBody] CrearProductoDto dto)
     {
         var result = await _productoService.CrearProductoAsync(dto);
@@ -43,5 +44,24 @@ public class ProductosController : ControllerBase
     {
         var result = await _productoService.ObtenerKardexAsync(sku, desde, hasta);
         return Ok(result);
+    }
+
+    [HttpPut("{id}")]
+    [Authorize(Roles = "ADMIN,OPERADOR")]
+    public async Task<IActionResult> ActualizarProducto(int id, [FromBody] ActualizarProductoDto dto)
+    {
+        try
+        {
+            await _productoService.ActualizarProductoAsync(id, dto);
+            return NoContent();
+        }
+        catch (BusinessRuleException ex)
+        {
+            return StatusCode(ex.StatusCode, new { detail = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { detail = ex.Message });
+        }
     }
 }

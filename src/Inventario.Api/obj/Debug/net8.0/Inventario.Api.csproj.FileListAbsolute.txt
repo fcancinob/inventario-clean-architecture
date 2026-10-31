@@ -1,3 +1,11 @@
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.csproj.AssemblyReference.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.AssemblyInfoInputs.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.AssemblyInfo.cs
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.csproj.CoreCompileInputs.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.sourcelink.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\bin\Debug\net8.0\appsettings.Development.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\bin\Debug\net8.0\appsettings.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\bin\Debug\net8.0\Inventario.Api.exe
@@ -128,14 +136,6 @@ C:\Users\Negro\Desktop\Antara\src\Inventario.Api\bin\Debug\net8.0\Inventario.Inf
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\bin\Debug\net8.0\Inventario.Infrastructure.pdb
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\bin\Debug\net8.0\Inventario.Application.pdb
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\bin\Debug\net8.0\Inventario.Domain.pdb
-C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.csproj.AssemblyReference.cache
-C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.AssemblyInfoInputs.cache
-C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.AssemblyInfo.cs
-C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.csproj.CoreCompileInputs.cache
-C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.MvcApplicationPartsAssemblyInfo.cs
-C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.MvcApplicationPartsAssemblyInfo.cache
-C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\Inventario.Api.sourcelink.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\Negro\Desktop\Antara\src\Inventario.Api\obj\Debug\net8.0\staticwebassets\msbuild.Inventario.Api.Microsoft.AspNetCore.StaticWebAssets.props

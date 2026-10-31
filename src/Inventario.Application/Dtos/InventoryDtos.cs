@@ -32,6 +32,15 @@ public record CrearProductoDto(
     [property: JsonPropertyName("stockMinimo")] int StockMinimo
 );
 
+public record ActualizarProductoDto(
+    [property: JsonPropertyName("nombre")] string Nombre,
+    [property: JsonPropertyName("marca")] string Marca,
+    [property: JsonPropertyName("categoriaId")] int CategoriaId,
+    [property: JsonPropertyName("precioCosto")] decimal PrecioCosto,
+    [property: JsonPropertyName("precioVenta")] decimal PrecioVenta,
+    [property: JsonPropertyName("stockMinimo")] int StockMinimo
+);
+
 public record RegistrarEntradaDto(
     [property: JsonPropertyName("productoId")] int ProductoId,
     [property: JsonPropertyName("proveedorId")] int ProveedorId,

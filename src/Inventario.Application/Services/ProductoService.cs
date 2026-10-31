@@ -92,6 +92,32 @@ public class ProductoService : IProductoService
         );
     }
 
+    public async Task ActualizarProductoAsync(int id, ActualizarProductoDto dto)
+    {
+        var producto = await _context.Set<Producto>().FirstOrDefaultAsync(p => p.Id == id);
+        if (producto == null)
+            throw new BusinessRuleException($"El producto con ID {id} no existe.", 404);
+
+        if (dto.PrecioVenta < dto.PrecioCosto || dto.PrecioCosto <= 0)
+            throw new BusinessRuleException("El precio de venta debe ser mayor o igual al precio de costo y ambos mayores a 0.");
+
+        if (dto.StockMinimo < 0)
+            throw new BusinessRuleException("El stock mínimo no puede ser negativo.");
+
+        bool existeCat = await _context.Set<Categoria>().AnyAsync(c => c.Id == dto.CategoriaId);
+        if (!existeCat)
+            throw new BusinessRuleException("La categoría especificada no existe.");
+
+        producto.Nombre = dto.Nombre.Trim();
+        producto.Marca = dto.Marca.Trim();
+        producto.CategoriaId = dto.CategoriaId;
+        producto.PrecioCosto = dto.PrecioCosto;
+        producto.PrecioVenta = dto.PrecioVenta;
+        producto.StockMinimo = dto.StockMinimo;
+
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<ProductoKardexFichaDto> ObtenerKardexAsync(string sku, DateTime? desde, DateTime? hasta)
     {
         var producto = await _context.Set<Producto>()
