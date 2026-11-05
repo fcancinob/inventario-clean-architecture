@@ -6,10 +6,10 @@
 
 ## 🛠️ Stack Tecnológico
 
-* **Backend:** C# | .NET 8 Web API | Entity Framework Core
-* **Base de Datos:** SQL Server / PostgreSQL | Redis (Caching)
-* **Frontend:** React + Vite | Tailwind CSS
-* **Herramientas & Herramientas:** Docker | Postman / Swagger UI
+- **Backend:** C# | .NET 8 Web API | Entity Framework Core
+- **Base de Datos:** SQL Server / PostgreSQL | Redis (Caching)
+- **Frontend:** React + Vite | Tailwind CSS
+- **Herramientas:** Docker | Postman / Swagger UI
 
 ---
 
@@ -17,10 +17,10 @@
 
 El proyecto fue estructurado siguiendo principios de **Clean Architecture** y **SOLID** para garantizar escalabilidad y mantenibilidad:
 
-* **Separación de Capas:** Dominio, Aplicación, Infraestructura y API claramente delimitados.
-* **Optimización de Rendimiento:** Implementación de Redis para consultas frecuentes de lectura y reducción de latencia.
-* **Resiliencia & Manejo de Errores:** Middleware global de excepciones para respuestas HTTP estandarizadas y controladas.
-* **Seguridad & Configuración:** Aislamiento de variables de entorno sensibles y configuración mediante patrones de opciones (`IOptions`).
+- **Separación de Capas:** Dominio, Aplicación, Infraestructura y API claramente delimitados.
+- **Optimización de Rendimiento:** Implementación de Redis para consultas frecuentes de lectura y reducción de latencia.
+- **Resiliencia & Manejo de Errores:** Middleware global de excepciones para respuestas HTTP estandarizadas y controladas.
+- **Seguridad & Configuración:** Aislamiento de variables de entorno sensibles y configuración mediante patrones de opciones (`IOptions`).
 
 ---
 
@@ -33,16 +33,30 @@ El proyecto fue estructurado siguiendo principios de **Clean Architecture** y **
 
 ---
 
-## ⚙️ Ejecución Local (Quick Start)
+## ⚙️ Instrucciones de Ejecución
 
-### Requisitos previos
-* .NET 8 SDK
-* Node.js (v18+)
-* Docker & Docker Compose (Opcional)
+### Requisitos Previos
+- .NET 8 SDK
+- Node.js (v18+)
 
-### Pasos para ejecutar
+### Comandos de Ejecución
 
-1. **Clonar el repositorio:**
-   ```bash
-   git clone [https://github.com/TU_USUARIO/TU_REPOSITORIO.git](https://github.com/TU_USUARIO/TU_REPOSITORIO.git)
-   cd TU_REPOSITORIO
+1. Clonar el repositorio:
+git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+cd TU_REPOSITORIO
+
+2. Iniciar la API (.NET Backend):
+cd API
+dotnet restore
+dotnet run
+
+3. Iniciar el Cliente Web (React Frontend):
+cd ../client
+npm install
+npm run dev
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la Licencia **MIT** - consulta el archivo [LICENSE](LICENSE) para más detalles.
